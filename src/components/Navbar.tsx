@@ -27,7 +27,7 @@ export const Navbar = () => {
             to="/"
             className="text-xl font-semibold text-gray-900 hover:text-primary transition-colors"
           >
-            TechTalent
+            SkilledConnects
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
