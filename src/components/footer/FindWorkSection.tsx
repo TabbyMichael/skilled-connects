@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Portfolio, Calculator } from "lucide-react";
+import { Briefcase, Calculator } from "lucide-react";
 
 export const FindWorkSection = () => {
   return (
@@ -9,7 +9,7 @@ export const FindWorkSection = () => {
       <ul className="space-y-2">
         <li>
           <Link to="/portfolio-builder" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 inline-flex items-center gap-2">
-            <Portfolio className="h-4 w-4" />
+            <Briefcase className="h-4 w-4" />
             Portfolio Builder
           </Link>
         </li>
