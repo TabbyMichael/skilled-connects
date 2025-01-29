@@ -19,6 +19,12 @@ export const FindWorkSection = () => {
             Rate Calculator
           </Link>
         </li>
+        <li>
+          <Link to="/templates" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 inline-flex items-center gap-2">
+            <Calculator className="h-4 w-4" />
+            Exams & assessments
+          </Link>
+        </li>
       </ul>
       <Button variant="outline" className="w-full mt-4">
         Create Your Profile

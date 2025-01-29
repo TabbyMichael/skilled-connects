@@ -23,21 +23,21 @@ const teamMembers: TeamMember[] = [
     name: 'John Smith',
     role: 'CEO & Founder',
     bio: 'Tech entrepreneur with 15+ years of experience in building digital platforms.',
-    imageUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=500&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=500&fit=crop'
   },
   {
     id: 2,
     name: 'Sarah Johnson',
     role: 'Head of Operations',
     bio: 'Former tech recruiter turned operations expert, passionate about connecting talent.',
-    imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=500&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=500&fit=crop'
   },
   {
     id: 3,
     name: 'Michael Chen',
     role: 'CTO',
     bio: 'Full-stack developer and system architect with a focus on scalable solutions.',
-    imageUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&h=500&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop'
   },
   {
     id: 4,
