@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { supabase } from '@/lib/supabase';
+import { Database } from '@/types/supabase';
 import {
   Select,
   SelectContent,
@@ -17,38 +19,82 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
+
+type Job = Database['public']['Tables']['jobs']['Row'];
 
 export default function HireTalent() {
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [expertise, setExpertise] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [jobForm, setJobForm] = useState({
+    title: '',
+    company: '',
+    location: '',
+    type: '',
+    description: '',
+    salary_range: '',
+    skills_required: [],
+  });
 
-  // Mock talent data - will be replaced with real API data
-  const talents = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      title: 'Senior Full Stack Developer',
-      expertise: ['React', 'Node.js', 'TypeScript', 'AWS'],
-      hourlyRate: '$85',
-      rating: 4.9,
-      completedProjects: 45,
-      location: 'San Francisco, CA',
-      availability: 'Full-time',
-      bio: 'Full stack developer with 8+ years of experience in building scalable web applications...',
-    },
-    {
-      id: 2,
-      name: 'Michael Chen',
-      title: 'UI/UX Designer',
-      expertise: ['Figma', 'Adobe XD', 'User Research', 'Prototyping'],
-      hourlyRate: '$65',
-      rating: 4.8,
-      completedProjects: 38,
-      location: 'Remote',
-      availability: 'Contract',
-      bio: 'Passionate designer focused on creating intuitive and beautiful user experiences...',
-    },
-  ];
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setJobForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleJobTypeChange = (value: string) => {
+    setJobForm(prev => ({
+      ...prev,
+      type: value
+    }));
+  };
+
+  const handlePostJob = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
+
+      const { error } = await supabase.from('jobs').insert({
+        ...jobForm,
+        posted_by: userData.user.id,
+        status: 'active',
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Success',
+        description: 'Job posted successfully',
+      });
+
+      // Reset form
+      setJobForm({
+        title: '',
+        company: '',
+        location: '',
+        type: '',
+        description: '',
+        salary_range: '',
+        skills_required: [],
+      });
+    } catch (error) {
+      console.error('Error posting job:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to post job. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
@@ -65,23 +111,41 @@ export default function HireTalent() {
             <CardDescription>Reach thousands of qualified professionals</CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-6">
+            <form onSubmit={handlePostJob} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Job Title</label>
-                  <Input placeholder="e.g. Senior Frontend Developer" />
+                  <Input
+                    name="title"
+                    value={jobForm.title}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Senior Frontend Developer"
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Company Name</label>
-                  <Input placeholder="Your company name" />
+                  <Input
+                    name="company"
+                    value={jobForm.company}
+                    onChange={handleInputChange}
+                    placeholder="Your company name"
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Location</label>
-                  <Input placeholder="e.g. Remote, New York, etc." />
+                  <Input
+                    name="location"
+                    value={jobForm.location}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Remote, New York, etc."
+                    required
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Job Type</label>
-                  <Select>
+                  <Select value={jobForm.type} onValueChange={handleJobTypeChange}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select job type" />
                     </SelectTrigger>
@@ -93,72 +157,34 @@ export default function HireTalent() {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Salary Range</label>
+                  <Input
+                    name="salary_range"
+                    value={jobForm.salary_range}
+                    onChange={handleInputChange}
+                    placeholder="e.g. $80,000 - $100,000"
+                    required
+                  />
+                </div>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Job Description</label>
                 <Textarea
+                  name="description"
+                  value={jobForm.description}
+                  onChange={handleInputChange}
                   placeholder="Describe the role, requirements, and responsibilities"
                   className="min-h-[150px]"
+                  required
                 />
               </div>
-              <Button className="w-full sm:w-auto">Post Job</Button>
+              <Button type="submit" className="w-full sm:w-auto" disabled={loading}>
+                {loading ? 'Posting...' : 'Post Job'}
+              </Button>
             </form>
           </CardContent>
         </Card>
-
-        {/* Browse Talent Section */}
-        <div className="space-y-6 sm:space-y-8">
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            <h2 className="text-xl sm:text-2xl font-semibold">Browse Available Talent</h2>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <Input
-                placeholder="Search by skill or title"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full sm:w-[250px]"
-              />
-              <Select value={expertise} onValueChange={setExpertise}>
-                <SelectTrigger className="w-full sm:w-[200px]">
-                  <SelectValue placeholder="Expertise" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="development">Development</SelectItem>
-                  <SelectItem value="design">Design</SelectItem>
-                  <SelectItem value="marketing">Marketing</SelectItem>
-                  <SelectItem value="writing">Writing</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            {talents.map((talent) => (
-              <Card key={talent.id} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 sm:p-6">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-semibold">{talent.name}</h3>
-                      <p className="text-muted-foreground">{talent.title}</p>
-                    </div>
-                    <Button variant="outline" className="w-full sm:w-auto">View Profile</Button>
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {talent.expertise.map((skill) => (
-                      <Badge key={skill} variant="secondary">{skill}</Badge>
-                    ))}
-                  </div>
-                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div className="text-muted-foreground">💰 {talent.hourlyRate}/hour</div>
-                    <div className="text-muted-foreground">⭐ {talent.rating} ({talent.completedProjects} projects)</div>
-                    <div className="text-muted-foreground">📍 {talent.location}</div>
-                    <div className="text-muted-foreground">🕒 {talent.availability}</div>
-                  </div>
-                  <p className="mt-4 text-sm text-muted-foreground line-clamp-2 sm:line-clamp-none">{talent.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
