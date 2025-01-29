@@ -32,13 +32,13 @@ export const Navbar = () => {
           
           <div className="hidden md:flex items-center space-x-8">
             <Link
-              to="/jobs"
+              to="/find-jobs"
               className="text-gray-700 hover:text-primary transition-colors"
             >
               Find Jobs
             </Link>
             <Link
-              to="/freelancers"
+              to="/hire-talent"
               className="text-gray-700 hover:text-primary transition-colors"
             >
               Hire Talent

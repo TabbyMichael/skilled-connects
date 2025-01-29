@@ -12,6 +12,8 @@ import BlogPost from "./pages/BlogPost";
 import FAQ from "./pages/FAQ";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import FindJobs from "./pages/FindJobs";
+import HireTalent from "./pages/HireTalent";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/find-jobs" element={<FindJobs />} />
+          <Route path="/hire-talent" element={<HireTalent />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/faq" element={<FAQ />} />
