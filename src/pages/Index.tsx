@@ -4,7 +4,7 @@ import { FreelancerCard } from "@/components/FreelancerCard";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Code, Smartphone, Layout, Server, Database, Shield } from "lucide-react";
 
 const featuredFreelancers = [
   {
@@ -46,12 +46,12 @@ const benefits = [
 ];
 
 const categories = [
-  "Web Development",
-  "Mobile Development",
-  "UI/UX Design",
-  "DevOps & Cloud",
-  "Data Science",
-  "Cybersecurity",
+  { name: "Web Development", icon: Code },
+  { name: "Mobile Development", icon: Smartphone },
+  { name: "UI/UX Design", icon: Layout },
+  { name: "DevOps & Cloud", icon: Server },
+  { name: "Data Science", icon: Database },
+  { name: "Cybersecurity", icon: Shield },
 ];
 
 const Index = () => {
@@ -138,22 +138,26 @@ const Index = () => {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Button
-                variant="outline"
-                className="w-full h-full min-h-[100px] text-lg font-medium hover:bg-accent"
+          {categories.map((category, index) => {
+            const Icon = category.icon;
+            return (
+              <motion.div
+                key={category.name}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
               >
-                {category}
-              </Button>
-            </motion.div>
-          ))}
+                <Button
+                  variant="outline"
+                  className="w-full h-full min-h-[100px] text-lg font-medium hover:bg-accent flex flex-col gap-3 items-center justify-center"
+                >
+                  <Icon className="h-6 w-6" />
+                  {category.name}
+                </Button>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
