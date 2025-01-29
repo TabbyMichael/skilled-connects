@@ -53,8 +53,8 @@ export const SignInForm = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md space-y-6 p-8 bg-white/95 dark:bg-gray-900/95 rounded-lg shadow-lg backdrop-blur-sm">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md space-y-4 sm:space-y-6 p-4 sm:p-8 bg-white/95 dark:bg-gray-900/95 rounded-lg shadow-lg backdrop-blur-sm overflow-y-auto max-h-[100vh] sm:max-h-[90vh]">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome back</h2>
           <p className="mt-2 text-gray-600 dark:text-gray-400">Sign in to your account</p>
