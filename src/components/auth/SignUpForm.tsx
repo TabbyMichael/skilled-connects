@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
@@ -42,23 +43,31 @@ export const SignUpForm = () => {
     },
   });
 
+  interface SignUpError {
+    message: string;
+  }
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      // TODO: Implement registration logic
-      console.log("Sign up values:", values);
-      toast({
-        title: "Success!",
-        description: "Your account has been created.",
-      });
-      navigate("/dashboard");
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-      });
-    }
-  };
+      try {
+        const { data, error } = await api.auth.signUp(values.email, values.password, values.name);
+        
+        if (error) {
+          throw error;
+        }
+  
+        toast({
+          title: "Success!",
+          description: "Your account has been created. Please check your email for verification.",
+        });
+        navigate("/login");
+      } catch (error: unknown) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: (error as SignUpError).message || "Something went wrong. Please try again.",
+        });
+      }
+    };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm">
