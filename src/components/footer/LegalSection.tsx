@@ -11,17 +11,17 @@ export const LegalSection = () => {
       
       <ul className="flex flex-wrap gap-4 text-sm">
         <li>
-          <Link to="/privacy" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+          <Link to="/privacy-policy" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
             Privacy Policy
           </Link>
         </li>
         <li>
-          <Link to="/terms" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+          <Link to="/terms-of-service" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
             Terms of Service
           </Link>
         </li>
         <li>
-          <Link to="/cookies" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
+          <Link to="/cookie-policy" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
             Cookie Policy
           </Link>
         </li>
