@@ -40,7 +40,7 @@ export const Hero = () => {
               Get Started
             </Link>
             <Link
-              to="/how-it-works"
+              to="/learn-more"
               className="px-8 py-3 rounded-lg bg-white text-gray-900 hover:bg-gray-50 transition-all transform hover:scale-105"
             >
               Learn More
