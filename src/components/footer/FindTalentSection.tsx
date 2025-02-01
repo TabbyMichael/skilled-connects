@@ -29,9 +29,11 @@ export const FindTalentSection = () => {
           </Link>
         </li>
       </ul>
-      <Button variant="outline" className="w-full mt-4 text-sm md:text-base py-2 md:py-3" onClick={handlePostJob}>
-        Post a Job for Free
-      </Button>
+      <Link to="/hire-talent" className="w-full">
+        <Button variant="outline" className="w-full mt-4 text-sm md:text-base py-2 md:py-3">
+          Post a Job for Free
+        </Button>
+      </Link>
     </div>
   );
 };
